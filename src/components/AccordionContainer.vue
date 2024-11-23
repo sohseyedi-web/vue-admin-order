@@ -1,37 +1,35 @@
 <template>
-    <Box dir="rtl">
+    <Box dir="rtl" :class="{
+    'bg-[#D8DBBD]': !child,
+    'bg-[#eee]' : child
+    }">
       <div 
         class="flex items-center justify-between text-zinc-800 cursor-pointer"
         @click="$emit('toggle')"
       >
-        <h3 class="lg:text-xl text-lg font-semibold">{{ title }}</h3>
+        <div class="relative">
+          <h3 class="lg:text-xl text-lg font-semibold">{{ title }}</h3>
+          <StarIcon v-if="req" class="size-3 absolute text-green-500 -top-0 -left-4"/>
+        </div>
         <ChevronDownIcon
           class="lg:size-8 size-6 transition-transform"
           :class="{ 'rotate-180': isOpen }"
         />
       </div>
       <div 
-        ref="contentRef"
-        :class="{ 'h-auto': isOpen }"
-        class="overflow-hidden transition-all duration-300"
-        :style="contentStyle"
+        v-if="isOpen"
+        class="overflow-hidden transition-all h-auto duration-300"
       >
-        <AccUserData v-show="visible === 1"/>
-        <AccOrder v-show="visible === 2"/>
-        <AccDetail v-show="visible === 3"/>
+        <slot></slot>
       </div>
     </Box>
 </template>
   
 <script setup lang="ts">
 import Box from './Box.vue';
-import { ChevronDownIcon } from '@heroicons/vue/20/solid';
-import { ref, computed } from 'vue';
-import AccUserData from './accordion/AccUserData.vue';
-import AccOrder from './accordion/AccOrder.vue';
-import AccDetail from './accordion/AccDetail.vue';
+import { ChevronDownIcon, StarIcon } from '@heroicons/vue/20/solid';
   
-  const { title ,isOpen,visible} = defineProps({
+  const { title ,isOpen,child,} = defineProps({
     title: {
       type: String,
       required: true
@@ -40,19 +38,16 @@ import AccDetail from './accordion/AccDetail.vue';
     type: Boolean,
     required: true,
   },
-    visible:{
-    type: Number,
+  child:{
+    type: Boolean,
     required: true,
-  }
+  },
+  req:{
+    type: Boolean,
+    default : true
+  },
   });
-  
-  const contentRef = ref<HTMLElement | null>(null);
-  
-  const contentStyle = computed(() => ({
-    maxHeight: isOpen && contentRef.value
-      ? `${contentRef.value.scrollHeight}px`
-      : '0px'
-  }));
+
 </script>
   
 <style scoped>
