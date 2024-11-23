@@ -40,7 +40,8 @@ import { ChevronDownIcon, StarIcon } from '@heroicons/vue/20/solid';
   },
   child:{
     type: Boolean,
-    required: true,
+    default : false
+
   },
   req:{
     type: Boolean,
