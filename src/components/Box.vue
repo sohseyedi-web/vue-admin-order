@@ -1,13 +1,5 @@
 <template>
-    <div class="bg">
-        
+    <div class="bg-[#D8DBBD] rounded-xl p-5 my-5">
+        <slot></slot>
     </div>
 </template>
-<script>
-export default {
-    
-}
-</script>
-<style lang="">
-    
-</style>
